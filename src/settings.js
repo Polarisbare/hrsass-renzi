@@ -1,16 +1,16 @@
 module.exports = {
-
+  // 修改浏览器标签中内容
   title: 'Vue Admin Template',
 
   /**
    * @type {boolean} true | false
-   * @description Whether fix the header
+   * @description   设置头部固定
    */
-  fixedHeader: false,
+  fixedHeader: true,
 
   /**
    * @type {boolean} true | false
-   * @description Whether show the logo in sidebar
+   * @description 设置左侧导航  logo显示
    */
-  sidebarLogo: false
+  sidebarLogo: true
 }

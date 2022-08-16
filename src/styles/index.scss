@@ -3,6 +3,7 @@
 @import './transition.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
+// 把这些文件只设定一个出口传到main.js
 
 body {
   height: 100%;
