@@ -13,7 +13,11 @@ const name = defaultSettings.title || 'vue Admin Template' // page title
 // For example, Mac: sudo npm run
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
-const port = process.env.port || process.env.npm_config_port || 9528 // dev port
+// VUE_APP_开头
+// 环境变量中的值，如果不以规范来命名的话在客户端代码（以后会参与到项目展示的代码参与打包的代码）中是读不到的
+// 但是不以规范来命名 在webpack环境下可以读取
+// 避免这个问题统一都按照规范命名
+const port = process.env.VUE_APP_POST // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {

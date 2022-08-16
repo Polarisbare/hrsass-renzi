@@ -1,6 +1,6 @@
 module.exports = {
   // 修改浏览器标签中内容
-  title: 'Vue Admin Template',
+  title: '人力资源管理平台',
 
   /**
    * @type {boolean} true | false
