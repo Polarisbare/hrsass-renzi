@@ -16,6 +16,7 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import request from '@/utils/request.js'
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
@@ -24,6 +25,9 @@ Vue.use(ElementUI, { locale })
 
 // 一些警告在线上是关掉的
 Vue.config.productionTip = false
+// 构造函数的原型对象上挂载的方法和属性都可以被构造函数对应的实例所访问
+// 只要是vue实例都可以访问$request
+Vue.prototype.$request = request
 
 new Vue({
   el: '#app',
