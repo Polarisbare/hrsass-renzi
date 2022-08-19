@@ -122,11 +122,19 @@ export default {
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
+        this.loading = true
         if (valid) {
           // console.log(res)
           // token 里面存的是个人信息和过期时间去哪都要
-          // 存token 去每个页面都要用到token所以封装一下存到vuex中的话就要放在store中
-          this.login(this.loginForm)
+          // 存token 去每个页面都要用到token所以封装一下存到vuex中话就要放在store中
+          this.login(this.loginForm).then(res => {
+            // console.log(res)
+            this.$router.push('/')
+          }).catch(error => {
+            console.log('error', error)
+          }).finally(() => {
+            this.loading = false
+          })
         }
       })
     }

@@ -15,9 +15,14 @@ const getters = { }
 
 const actions = { // 放入异步操作
   login(context, data) {
-    loginApi(data).then(res => {
-      const token = res.data.data
-      context.commit('setToken', token)
+    return new Promise((resolve, reject) => {
+      loginApi(data).then(res => {
+        const token = res.data
+        context.commit('setToken', token)
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
     })
   }
 }
