@@ -62,7 +62,7 @@
 </template>
 
 <script>
-
+import { loginApi } from '@/api/user'
 export default {
   name: 'Login',
   data() {
@@ -122,10 +122,8 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.$request({
-            url: '/sys/login',
-            method: 'POST',
-            data: this.loginForm
+          loginApi(this.loginForm).then(res => {
+            console.log(res)
           })
         }
       })
