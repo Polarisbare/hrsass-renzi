@@ -1,6 +1,7 @@
+// 下包引入
 import Cookies from 'js-cookie'
 
-const TokenKey = 'vue_admin_template_token'
+const TokenKey = 'hrsass-renzi'
 
 export function getToken() {
   return Cookies.get(TokenKey)

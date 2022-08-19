@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { loginApi } from '@/api/user'
+import { mapActions } from 'vuex'
 export default {
   name: 'Login',
   data() {
@@ -109,6 +109,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('user', ['login']),
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -122,9 +123,10 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          loginApi(this.loginForm).then(res => {
-            console.log(res)
-          })
+          // console.log(res)
+          // token 里面存的是个人信息和过期时间去哪都要
+          // 存token 去每个页面都要用到token所以封装一下存到vuex中的话就要放在store中
+          this.login(this.loginForm)
         }
       })
     }
