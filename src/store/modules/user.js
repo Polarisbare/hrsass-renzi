@@ -52,6 +52,7 @@ const actions = { // 放入异步操作
     const res = await getUserInfoApi()
     const data = res.data
     context.commit('setUserInfo', data)
+    // async
     return res
   }
 }
