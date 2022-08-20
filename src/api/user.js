@@ -11,3 +11,12 @@ export const loginApi = (data) => {
     data
   })
 }
+/**
+ * 获取用户资料
+ */
+export const getUserInfoApi = () => {
+  return request({
+    url: '/sys/profile',
+    method: 'POST'
+  })
+}
