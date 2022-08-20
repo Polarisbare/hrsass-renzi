@@ -129,6 +129,7 @@ export default {
           // 存token 去每个页面都要用到token所以封装一下存到vuex中话就要放在store中
           this.login(this.loginForm).then(res => {
             // console.log(res)
+            this.$message.success('牛鼻')
             this.$router.push('/')
           }).catch(error => {
             console.log('error', error)

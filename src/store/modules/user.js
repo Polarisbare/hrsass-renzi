@@ -18,29 +18,41 @@ const mutations = { // 能改变state里面的值
 const getters = { }
 
 const actions = { // 放入异步操作
-  login(context, data) {
-    return new Promise((resolve, reject) => {
-      loginApi(data).then(res => {
-        const token = res.data
-        context.commit('setToken', token)
-        resolve(res)
-      }).catch(error => {
-        reject(error)
-      })
-    })
+  // login(context, data) {
+  //   return new Promise((resolve, reject) => {
+  //     loginApi(data).then(res => {
+  //       const token = res.data
+  //       context.commit('setToken', token)
+  //       resolve(res)
+  //     }).catch(error => {
+  //       reject(error)
+  //     })
+  //   })
+  // },
+  async login(context, data) {
+    const res = await loginApi(data)
+    const token = res.data
+    context.commit('setToken', token)
+    return res
   },
-  getUserInfo(context) {
-    return new Promise((resolve, reject) => {
-      getUserInfoApi().then(res => {
-        // console.log(res)
-        // const data = res.data
-        const { data } = res
-        context.commit('setUserInfo', data)
-        resolve(res)// 把成功的信息返回出来
-      }).catch((error) => {
-        reject(error)
-      })
-    })
+  // getUserInfo(context) {
+  //   return new Promise((resolve, reject) => {
+  //     getUserInfoApi().then(res => {
+  //       // console.log(res)
+  //       // const data = res.data
+  //       const { data } = res
+  //       context.commit('setUserInfo', data)
+  //       resolve(res)// 把成功的信息返回出来
+  //     }).catch((error) => {
+  //       reject(error)
+  //     })
+  //   })
+  // }
+  async getUserInfo(context) {
+    const res = await getUserInfoApi()
+    const data = res.data
+    context.commit('setUserInfo', data)
+    return res
   }
 }
 
