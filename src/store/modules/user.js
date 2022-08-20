@@ -1,4 +1,4 @@
-import { loginApi, getUserInfoApi } from '@/api/user'
+import { loginApi, getUserInfoApi, getBaseUserInfoApi } from '@/api/user'
 import { getToken, setToken } from '@/utils/auth'
 const state = {
   token: getToken() || '',
@@ -48,12 +48,20 @@ const actions = { // 放入异步操作
   //     })
   //   })
   // }
-  async getUserInfo(context) {
-    const res = await getUserInfoApi()
-    const data = res.data
-    context.commit('setUserInfo', data)
+  async getUserInfo({ commit }) {
+    const { data } = await getUserInfoApi()
+    // console.log(data)
+    const { data: data2 } = await getBaseUserInfoApi(data.userId)
+    // console.log('wudi', data2)
+    // 创建一个新对象用于合并
+    const baseDate = {
+      ...data,
+      ...data2
+    }
+    // console.log(baseDate)
+    commit('setUserInfo', baseDate)
     // async
-    return res
+    return baseDate
   }
 }
 

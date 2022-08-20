@@ -20,3 +20,14 @@ export const getUserInfoApi = () => {
     method: 'POST'
   })
 }
+
+/**
+ * 获取用户基本信息
+ * @param {*} id
+ * @returns
+ */
+export const getBaseUserInfoApi = (id) => {
+  return request({
+    url: `/sys/user/${id}`
+  })
+}
