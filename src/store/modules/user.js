@@ -58,7 +58,7 @@ const actions = { // 放入异步操作
       ...data,
       ...data2
     }
-    // console.log(baseDate)
+    console.log(baseDate)
     commit('setUserInfo', baseDate)
     // async
     return baseDate

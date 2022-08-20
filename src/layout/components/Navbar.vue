@@ -5,13 +5,13 @@
     <!-- <breadcrumb class="breadcrumb-container" /> -->
     <div class="app-breadcrumb">
       江苏传智播客教育科技股份有限公司
-      <span class="breadBtn">体验版</span>
+      <span v-color="yanse" class="breadBtn">体验版</span>
     </div>
 
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/common/bigUserHeader.png" class="user-avatar">
+          <img v-imgerror="defaultImg" :src="staffPhoto" class="user-avatar">
           <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" style="color:#fff" />
         </div>
@@ -38,17 +38,24 @@ import { mapGetters, mapActions } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 // import { getUserInfoApi } from '@/api/user'
-
+import defaultImg from '@/assets/common/bigUserHeader.png'
 export default {
   components: {
     // Breadcrumb,
     Hamburger
   },
+  data() {
+    return {
+      defaultImg: defaultImg,
+      yanse: 'red'
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
       'avatar',
-      'name'
+      'name',
+      'staffPhoto'
     ])
   },
   created() {
