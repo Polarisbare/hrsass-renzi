@@ -13,7 +13,14 @@ router.beforeEach((to, from, next) => {
       next('/')
       NProgress.done()
     } else {
-      next()
+      // 获取用户信息    Object.keys检查对象里面所有的key值
+      if (Object.keys(store.state.user.userInfo).length <= 0) {
+        store.dispatch('user/getUserInfo').then(() => {
+          next()
+        })
+      } else {
+        next()
+      }
     }
   } else {
     if (writeList.includes(to.path)) {

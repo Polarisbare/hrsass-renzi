@@ -12,7 +12,7 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img src="@/assets/common/bigUserHeader.png" class="user-avatar">
-          <span class="name">管理员</span>
+          <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" style="color:#fff" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -34,10 +34,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import { getUserInfoApi } from '@/api/user'
+// import { getUserInfoApi } from '@/api/user'
 
 export default {
   components: {
@@ -47,25 +47,27 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'name'
     ])
   },
   created() {
-    this.getUserInfo()
+    // this.getUserInfo()
   },
   methods: {
+    ...mapActions('user', ['getUserInfo']), // 调用   获取用户信息方法 vuex中
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-    },
-    getUserInfo() {
-      getUserInfoApi().then(res => {
-        console.log(res)
-      })
     }
+    // getUserInfo() {
+    //   getUserInfoApi().then(res => {
+    //     console.log(res)
+    //   })
+    // }
   }
 }
 </script>
