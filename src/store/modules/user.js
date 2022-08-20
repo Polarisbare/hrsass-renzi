@@ -1,5 +1,5 @@
 import { loginApi, getUserInfoApi, getBaseUserInfoApi } from '@/api/user'
-import { getToken, setToken } from '@/utils/auth'
+import { getToken, removeToken, setToken } from '@/utils/auth'
 const state = {
   token: getToken() || '',
   userInfo: {}
@@ -10,8 +10,15 @@ const mutations = { // 能改变state里面的值
     state.token = newToken
     setToken(newToken)
   },
+  clearToken(state) {
+    state.token = ''
+    removeToken()
+  },
   setUserInfo(state, newToken) {
     state.userInfo = newToken
+  },
+  clearUserInfo(state) {
+    state.userInfo = {}
   }
 }
 
@@ -60,8 +67,12 @@ const actions = { // 放入异步操作
     }
     console.log(baseDate)
     commit('setUserInfo', baseDate)
-    // async
+
     return baseDate
+  },
+  logout({ commit }) {
+    commit('clearToken')
+    commit('clearUserInfo')
   }
 }
 

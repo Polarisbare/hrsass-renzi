@@ -18,6 +18,16 @@ import '@/icons' // icon
 import '@/permission' // permission control
 import request from '@/utils/request.js'
 
+import * as directive from '@/directive/index'
+// 1.利用for in
+// for (const key in directive) {
+//   Vue.directive(key, directive[key])
+// }
+// 2.利用Object[key]注册
+Object.keys(directive).forEach(key => {
+  Vue.directive(key, directive[key])
+})
+
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
@@ -28,24 +38,6 @@ Vue.config.productionTip = false
 // 构造函数的原型对象上挂载的方法和属性都可以被构造函数对应的实例所访问
 // 只要是vue实例都可以访问$request
 Vue.prototype.$request = request
-
-Vue.directive('imgerror', {
-  // 当时用了这个自定义指令的标签被渲染的时候会执行inserted钩子函数
-  // el  表示的时试试用这个指令的标签
-  // binding：使用指令的时候传过来的标签
-  inserted(el, binding) {
-    // img 标签有一个onerror事件，当图片加载失败的时候
-    el.onerror = function() {
-      // 执行的话说明失败
-      el.src = binding.value
-    }
-  }
-})
-Vue.directive('color', {
-  inserted(el, binding) {
-    el.style.color = binding.value
-  }
-})
 
 new Vue({
   el: '#app',
