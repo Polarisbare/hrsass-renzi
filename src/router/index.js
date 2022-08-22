@@ -55,18 +55,6 @@ export const constantRoutes = [
     }]
   },
 
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
   // 以上路由都匹配不到就会进入404
   { path: '*', redirect: '/404', hidden: true }
 ]
