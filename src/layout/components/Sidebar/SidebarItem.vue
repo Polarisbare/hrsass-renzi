@@ -1,4 +1,5 @@
 <template>
+  <!-- 只有一个显示导航 ，或没有自导航的时候显示这个罗杰-->
   <div v-if="!item.hidden">
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">

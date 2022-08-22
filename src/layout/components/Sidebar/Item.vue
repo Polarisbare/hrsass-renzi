@@ -13,6 +13,8 @@ export default {
     }
   },
   render(h, context) {
+    // 函数内部没有this
+
     const { icon, title } = context.props
     const vnodes = []
 
@@ -25,6 +27,7 @@ export default {
     }
 
     if (title) {
+      // 在js中拼接html对象（jsx语法）
       vnodes.push(<span slot='title'>{(title)}</span>)
     }
     return vnodes
