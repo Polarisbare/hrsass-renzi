@@ -7,11 +7,11 @@
         <!-- 当el-row 放到其他标签中，宽度是通过内容撑开的 -->
         <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
           <template #default="{data}">
-            <trre-tools :node-data="data" @del-depts="getDepartmentsList" @add-depts="showAddDeptsDialog(nodeData)" />
+            <trre-tools :node-data="data" @del-depts="getDepartmentsList" @add-depts="showAddDeptsDialog" />
           </template>
         </el-tree>
       </el-card>
-      <add-depts :show-dialog="showDialog" @closeDialogFn="closeDialog" />
+      <add-depts :show-dialog="showDialog" :node-data="nodeData" :departs-list="departsList" @closeDialogFn="closeDialog" />
     </div>
   </div>
 </template>
@@ -29,6 +29,7 @@ export default {
   data() {
     return {
       departs: [],
+      departsList: [],
       company: { name: '江苏传智播客教育科技股份有限公司', manager: '负责人' },
       defaultProps: {
         label: 'name'
@@ -44,6 +45,7 @@ export default {
     async getDepartmentsList() {
       const { data } = await getDepartmentsListApi()
       this.company.name = data.companyName
+      this.departsList = data.depts
       this.departs = transListToTreeData(data.depts, '')
       // console.log(data)
     },
@@ -83,6 +85,7 @@ export default {
     showAddDeptsDialog(nodeData) {
       this.showDialog = true
       this.nodeData = nodeData
+      console.log(this.nodeData)
     }
   }
 }

@@ -61,7 +61,7 @@ export default {
       if (command === 'add') {
         // console.log('点击添加')
         // 点击添加出现模态框
-        this.$emit('add-depts')
+        this.$emit('add-depts', this.nodeData)
       }
       if (command === 'emit') {
         console.log('点击编辑')
