@@ -52,14 +52,16 @@ export default {
         }).then(async() => {
           await delDepartmentApi(this.nodeData.id)
           this.$message.success('删除成功')
-          this.$emit('del-depts')
+          this.$emit('del-depts', this.nodeData)
         }).catch(() => {})
         // delDepartmentApi(this.nodeData.id){
         //   this.$emit('del-depts')
         // }
       }
       if (command === 'add') {
-        console.log('点击添加')
+        // console.log('点击添加')
+        // 点击添加出现模态框
+        this.$emit('add-depts')
       }
       if (command === 'emit') {
         console.log('点击编辑')

@@ -7,7 +7,7 @@
         <!-- 当el-row 放到其他标签中，宽度是通过内容撑开的 -->
         <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
           <template #default="{data}">
-            <trre-tools :node-data="data" @del-depts="getDepartmentsList" />
+            <trre-tools :node-data="data" @del-depts="getDepartmentsList" @add-depts="showAddDeptsDialog(nodeData)" />
           </template>
         </el-tree>
       </el-card>
@@ -33,7 +33,8 @@ export default {
       defaultProps: {
         label: 'name'
       },
-      showDialog: true
+      showDialog: false,
+      nodeData: {}
     }
   },
   created() {
@@ -78,6 +79,10 @@ export default {
     closeDialog() {
       // console.log(val)
       this.showDialog = false
+    },
+    showAddDeptsDialog(nodeData) {
+      this.showDialog = true
+      this.nodeData = nodeData
     }
   }
 }

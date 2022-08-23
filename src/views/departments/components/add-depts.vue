@@ -2,6 +2,7 @@
   <el-dialog
     title="添加部门"
     :visible="showDialog"
+    :close-on-click-modal="false"
     @close="closeDialog"
   >
 
