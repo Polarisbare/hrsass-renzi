@@ -115,3 +115,21 @@ export function param2Obj(url) {
   })
   return obj
 }
+/**
+ * 转换列表数据为树状结构
+ * @param {*} list 所有列表数据
+ * @param {*} searchVal 要查找的数据
+ * @returns
+ */
+export const transListToTreeData = (list, searchVal) => {
+  // 先找父级
+  const arr = []
+  list.forEach(item => {
+    if (item.pid === searchVal) {
+      const children = transListToTreeData(list, item.id) || []
+      item.children = children
+      arr.push(item)
+    }
+  })
+  return arr
+}
