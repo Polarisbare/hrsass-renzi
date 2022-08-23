@@ -38,7 +38,25 @@ export default {
     async getDepartmentsList() {
       const { data } = await getDepartmentsListApi()
       this.company.name = data.companyName
-      this.departs = data.depts
+      this.departs = this.transListToTreeData(data.depts, '')
+      // console.log(data)
+    },
+    transListToTreeData(list, searchVal) {
+      // console.log(list)
+      // 先找父级加入一个数组  父级的pid都是‘’
+      const arr = []
+      list.forEach(item => {
+        if (item.pid === searchVal) {
+          arr.push(item)
+        }
+      })
+      // console.log(arr)
+      // 找到子集的数组
+      arr.forEach(item => {
+        const children = list.filter(obj => obj.pid === item.id)
+        item.children = children
+      })
+      return arr
     }
   }
 }
