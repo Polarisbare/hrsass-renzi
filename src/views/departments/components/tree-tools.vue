@@ -9,15 +9,15 @@
         <el-col :span="12">{{ nodeData.manager }}</el-col>
         <el-col :span="12">
           <!-- 下拉菜单 element -->
-          <el-dropdown>
+          <el-dropdown @command="handleCommand">
             <span>
               操作<i class="el-icon-arrow-down" />
             </span>
             <!-- 下拉菜单 -->
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-if="!isRoot">删除部门</el-dropdown-item>
-              <el-dropdown-item v-if="!isRoot">修改部门</el-dropdown-item>
-              <el-dropdown-item>添加子部门</el-dropdown-item>
+              <el-dropdown-item v-if="!isRoot" command="del">删除部门</el-dropdown-item>
+              <el-dropdown-item v-if="!isRoot" command="emit">修改部门</el-dropdown-item>
+              <el-dropdown-item command="add">添加子部门</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-col>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { delDepartmentApi } from '@/api/departments.js'
 export default {
   props: {
     nodeData: {
@@ -37,6 +38,32 @@ export default {
     isRoot: {
       type: Boolean,
       default: false
+    }
+  },
+  methods: {
+    handleCommand(command) {
+      // console.log(command)
+      if (command === 'del') {
+        // console.log('点击删除')
+        this.$confirm('确定删除吗', '温馨提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async() => {
+          await delDepartmentApi(this.nodeData.id)
+          this.$message.success('删除成功')
+          this.$emit('del-depts')
+        }).catch(() => {})
+        // delDepartmentApi(this.nodeData.id){
+        //   this.$emit('del-depts')
+        // }
+      }
+      if (command === 'add') {
+        console.log('点击添加')
+      }
+      if (command === 'emit') {
+        console.log('点击编辑')
+      }
     }
   }
 }

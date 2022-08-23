@@ -5,23 +5,26 @@
         <!-- 用了一个行列布局 -->
         <trre-tools :node-data="company" :is-root="true" />
         <!-- 当el-row 放到其他标签中，宽度是通过内容撑开的 -->
-        <el-tree :data="departs" :props="defaultProps">
+        <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
           <template #default="{data}">
-            <trre-tools :node-data="data" />
+            <trre-tools :node-data="data" @del-depts="getDepartmentsList" />
           </template>
         </el-tree>
       </el-card>
+      <add-depts :show-dialog="showDialog" @closeDialogFn="closeDialog" />
     </div>
   </div>
 </template>
 <script>
 import trreTools from './components/tree-tools.vue'
+import addDepts from './components/add-depts.vue'
 import { getDepartmentsListApi } from '@/api/departments'
 import { transListToTreeData } from '@/utils/index'
 export default {
   name: 'Departments',
   components: {
-    trreTools
+    trreTools,
+    addDepts
   },
   data() {
     return {
@@ -29,7 +32,8 @@ export default {
       company: { name: '江苏传智播客教育科技股份有限公司', manager: '负责人' },
       defaultProps: {
         label: 'name'
-      }
+      },
+      showDialog: true
     }
   },
   created() {
@@ -41,7 +45,7 @@ export default {
       this.company.name = data.companyName
       this.departs = transListToTreeData(data.depts, '')
       // console.log(data)
-    }
+    },
     //   transListToTreeData(list, searchVal) {
     //   //   // console.log(list)
     //   //   // 先找父级加入一个数组  父级的pid都是‘’
@@ -71,6 +75,10 @@ export default {
     //   })
     //   return arr
     // }
+    closeDialog() {
+      // console.log(val)
+      this.showDialog = false
+    }
   }
 }
 </script>

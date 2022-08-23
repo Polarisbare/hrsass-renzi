@@ -8,3 +8,9 @@ export const getDepartmentsListApi = async() => {
     url: '/company/department'
   })
 }
+export const delDepartmentApi = (id) => {
+  return request({
+    url: `/company/department/${id}`,
+    method: 'DELETE'
+  })
+}
