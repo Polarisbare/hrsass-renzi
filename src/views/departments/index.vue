@@ -16,6 +16,7 @@
 </template>
 <script>
 import trreTools from './components/tree-tools.vue'
+import { getDepartmentsListApi } from '@/api/departments'
 export default {
   name: 'Departments',
   components: {
@@ -23,19 +24,21 @@ export default {
   },
   data() {
     return {
-      departs: [
-        {
-          name: '总裁办',
-          manager: '曹操',
-          children: [{ name: '董事会', manager: '曹丕' }]
-        },
-        { name: '行政部', manager: '刘备' },
-        { name: '人事部', manager: '孙权' }
-      ],
+      departs: [],
       company: { name: '江苏传智播客教育科技股份有限公司', manager: '负责人' },
       defaultProps: {
         label: 'name'
       }
+    }
+  },
+  created() {
+    this.getDepartmentsList()
+  },
+  methods: {
+    async getDepartmentsList() {
+      const { data } = await getDepartmentsListApi()
+      this.company.name = data.companyName
+      this.departs = data.depts
     }
   }
 }
