@@ -3,7 +3,7 @@
     <div class="app-container">
       <el-card class="tree-card">
         <!-- 用了一个行列布局 -->
-        <trre-tools :node-data="company" :is-root="true" />
+        <trre-tools :node-data="company" :is-root="true" @add-depts="showAddDeptsDialog" />
         <!-- 当el-row 放到其他标签中，宽度是通过内容撑开的 -->
         <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
           <template #default="{data}">
@@ -11,7 +11,7 @@
           </template>
         </el-tree>
       </el-card>
-      <add-depts :show-dialog="showDialog" :node-data="nodeData" :departs-list="departsList" @closeDialogFn="closeDialog" />
+      <add-depts ref="addDepts" :show-dialog="showDialog" :node-data="nodeData" :departs-list="departsList" @add-depts-success="getDepartmentsList" @closeDialogFn="closeDialog" />
     </div>
   </div>
 </template>
@@ -30,7 +30,7 @@ export default {
     return {
       departs: [],
       departsList: [],
-      company: { name: '江苏传智播客教育科技股份有限公司', manager: '负责人' },
+      company: { name: '江苏传智播客教育科技股份有限公司', manager: '负责人', id: '' },
       defaultProps: {
         label: 'name'
       },
@@ -85,7 +85,8 @@ export default {
     showAddDeptsDialog(nodeData) {
       this.showDialog = true
       this.nodeData = nodeData
-      console.log(this.nodeData)
+      this.$refs.addDepts.getSimpleUserList()
+      // console.log(this.nodeData)
     }
   }
 }

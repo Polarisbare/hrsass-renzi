@@ -6,7 +6,7 @@
     @close="closeDialog"
   >
     <!-- 表单元素 el-form  el-selet -->
-    <el-form label-width="120px" :model="form" :rules="rules">
+    <el-form ref="addform" label-width="120px" :model="form" :rules="rules">
       <el-form-item label="部门名称" prop="name">
         <el-input v-model="form.name" style="width:80%" placeholder="1-10个字符" />
       </el-form-item>
@@ -14,16 +14,29 @@
         <el-input v-model="form.code" style="width:80%" placeholder="1-10个字符" />
       </el-form-item>
       <el-form-item label="部门负责人" prop="manager">
-        <el-select v-model="form.manager" style="width:80%" placeholder="请选择" />
+        <el-select v-model="form.manager" style="width:80%" placeholder="请选择">
+          <el-option
+            v-for="item in employeesList"
+            :key="item.id"
+            :value="item.username"
+            :label="item.username"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="部门介绍" prop="introduce">
         <el-input v-model="form.introduce" style="width:80%" placeholder="1-300个字符" type="textarea" :rows="3" />
       </el-form-item>
     </el-form>
+    <div slot="footer">
+      <el-button type="primary" size="small" @click="submitDepts">确定</el-button>
+      <el-button size="small">取消</el-button>
+    </div>
   </el-dialog>
 </template>
 
 <script>
+import { getSimpleUserListApi } from '@/api/employees'
+import { addDepartmentApi } from '@/api/departments'
 export default {
   name: 'AddDepts',
   props: {
@@ -52,12 +65,12 @@ export default {
         name: [
           { required: true, message: '部门名称不能为空', tiigger: ['blur', 'change'] },
           { min: 1, max: 10, message: '部门名称要求1-10字符', tiigger: ['blur', 'change'] },
-          { validator: this.validatDeptCodeIsRepeat, tiigger: 'blur' }
+          { validator: this.validatDeptNameIsRepeat, tiigger: 'blur' }
         ],
         code: [
           { required: true, message: '部门编码不能为空', tiigger: ['blur', 'change'] },
           { min: 1, max: 10, message: '部门编码要求1-10字符', tiigger: ['blur', 'change'] },
-          { validator: this.validatDeptNameIsRepeat, tiigger: 'blur' }
+          { validator: this.validatDeptCodeIsRepeat, tiigger: 'blur' }
         ],
         manager: [
           { required: true, message: '部门管理者不能为空', tiigger: ['change'] }
@@ -66,7 +79,8 @@ export default {
           { required: true, message: '部门介绍不能为空', tiigger: ['blur', 'change'] },
           { min: 1, max: 300, message: '部门介绍要求1-300字符', tiigger: ['blur', 'change'] }
         ]
-      }
+      },
+      employeesList: []
 
     }
   },
@@ -90,6 +104,28 @@ export default {
     validatDeptCodeIsRepeat(rule, value, callback) {
       const isRepeat = this.departsList.some(item => item.code === value)
       isRepeat ? callback(new Error('当前编码已存在')) : callback()
+    },
+    async getSimpleUserList() {
+      const { data } = await getSimpleUserListApi()
+      // console.log(res)
+      this.employeesList = data
+      console.log(data)
+    },
+    // openDialog() {
+    //   this.getSimpleUserList()
+    // }
+    submitDepts() {
+      this.$refs.addform.validate(async falg => {
+        // console.log(falg)
+        if (!falg) return
+        await addDepartmentApi({ ...this.form, pid: this.nodeData.id })
+        this.$message.success('恭喜添加成功')
+        // console.log(res)
+        // 关闭弹框
+        this.closeDialog()
+        // 清空表单
+        this.$emit('add-depts-success')
+      })
     }
   }
 }

@@ -14,3 +14,15 @@ export const delDepartmentApi = (id) => {
     method: 'DELETE'
   })
 }
+/**
+ * 添加部门
+ * @param {*} data
+ * @returns
+ */
+export const addDepartmentApi = (data) => {
+  return request({
+    url: '/company/department',
+    method: 'POST',
+    data
+  })
+}
