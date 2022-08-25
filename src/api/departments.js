@@ -27,12 +27,20 @@ export const addDepartmentApi = (data) => {
   })
 }
 /**
- * 修改部门
+ * 获取id
  * @param {*} id
  * @returns
  */
 export const getDepartmentDetailApi = (id) => {
   return request({
     url: `/company/department/${id}`
+  })
+}
+
+export const editDepartmentApi = form => {
+  return request({
+    url: `/company/department/${form.id}`,
+    method: 'PUT',
+    data: form
   })
 }

@@ -37,7 +37,7 @@
 
 <script>
 import { getSimpleUserListApi } from '@/api/employees'
-import { addDepartmentApi, getDepartmentDetailApi } from '@/api/departments'
+import { addDepartmentApi, getDepartmentDetailApi, editDepartmentApi } from '@/api/departments'
 export default {
   name: 'AddDepts',
   props: {
@@ -137,8 +137,14 @@ export default {
       this.$refs.addform.validate(async falg => {
         // console.log(falg)
         if (!falg) return
-        await addDepartmentApi({ ...this.form, pid: this.nodeData.id })
-        this.$message.success('恭喜添加成功')
+        if (this.form.id) {
+          // 修改
+          await editDepartmentApi(this.form)
+          this.$message.success('恭喜修改成功')
+        } else {
+          await addDepartmentApi({ ...this.form, pid: this.nodeData.id })
+          this.$message.success('恭喜添加成功')
+        }
         // console.log(res)
         // 关闭弹框
         this.closeDialog()
