@@ -1,9 +1,10 @@
 <template>
   <el-dialog
-    title="添加部门"
+    :title="showTitle"
     :visible="showDialog"
     :close-on-click-modal="false"
     @close="closeDialog"
+    @open="openDialog"
   >
     <!-- 表单元素 el-form  el-selet -->
     <el-form ref="addform" label-width="120px" :model="form" :rules="rules">
@@ -29,14 +30,14 @@
     </el-form>
     <div slot="footer">
       <el-button type="primary" size="small" @click="submitDepts">确定</el-button>
-      <el-button size="small">取消</el-button>
+      <el-button size="small" @click="closeDialog">取消</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
 import { getSimpleUserListApi } from '@/api/employees'
-import { addDepartmentApi } from '@/api/departments'
+import { addDepartmentApi, getDepartmentDetailApi } from '@/api/departments'
 export default {
   name: 'AddDepts',
   props: {
@@ -55,6 +56,7 @@ export default {
   },
   data() {
     return {
+      // showTitle: '',
       form: {
         name: '', // 部门名称
         code: '', // 部门编码
@@ -84,12 +86,29 @@ export default {
 
     }
   },
+  computed: {
+    showTitle() {
+      return this.form.id ? '修改部门' : '添加子部门'
+    }
+  },
   //   created() {
   //     console.log(this.nodeData)
   //   },
   methods: {
     closeDialog() {
-      this.$emit('closeDialogFn', false)
+      // this.$emit('closeDialogFn', false)
+      // 子组件必须通过固定语法去修改父组件的数据
+      // 语法：this.$emit('update:prop传来的参数'，你要修改的值)
+      this.$emit('update:showDialog', false)
+      this.$refs.addform.resetFields()
+      this.form = {
+        form: {
+          name: '', // 部门名称
+          code: '', // 部门编码
+          manager: '', // 部门管理者
+          introduce: '' // 部门介绍
+        }
+      }
     },
     // 三个参数  rule value callback
     validatDeptNameIsRepeat(rule, value, callback) {
@@ -111,9 +130,9 @@ export default {
       this.employeesList = data
       console.log(data)
     },
-    // openDialog() {
-    //   this.getSimpleUserList()
-    // }
+    openDialog() {
+      this.getSimpleUserList()
+    },
     submitDepts() {
       this.$refs.addform.validate(async falg => {
         // console.log(falg)
@@ -126,6 +145,11 @@ export default {
         // 清空表单
         this.$emit('add-depts-success')
       })
+    },
+    async getDepartmentDetail() {
+      const { data } = await getDepartmentDetailApi(this.nodeData.id)
+      // console.log(res)
+      this.form = data
     }
   }
 }

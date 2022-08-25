@@ -26,3 +26,13 @@ export const addDepartmentApi = (data) => {
     data
   })
 }
+/**
+ * 修改部门
+ * @param {*} id
+ * @returns
+ */
+export const getDepartmentDetailApi = (id) => {
+  return request({
+    url: `/company/department/${id}`
+  })
+}

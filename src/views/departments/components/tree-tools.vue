@@ -16,7 +16,7 @@
             <!-- 下拉菜单 -->
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item v-if="!isRoot" command="del">删除部门</el-dropdown-item>
-              <el-dropdown-item v-if="!isRoot" command="emit">修改部门</el-dropdown-item>
+              <el-dropdown-item v-if="!isRoot" command="edit">修改部门</el-dropdown-item>
               <el-dropdown-item command="add">添加子部门</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -63,8 +63,10 @@ export default {
         // 点击添加出现模态框
         this.$emit('add-depts', this.nodeData)
       }
-      if (command === 'emit') {
-        console.log('点击编辑')
+      if (command === 'edit') {
+        // console.log('点击编辑')
+        //  this.nodeData 在修改的时候充当自己
+        this.$emit('edit-depts', this.nodeData)
       }
     }
   }

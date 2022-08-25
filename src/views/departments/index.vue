@@ -7,11 +7,11 @@
         <!-- 当el-row 放到其他标签中，宽度是通过内容撑开的 -->
         <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
           <template #default="{data}">
-            <trre-tools :node-data="data" @del-depts="getDepartmentsList" @add-depts="showAddDeptsDialog" />
+            <trre-tools :node-data="data" @del-depts="getDepartmentsList" @add-depts="showAddDeptsDialog" @edit-depts="showEditDeptsDialog" />
           </template>
         </el-tree>
       </el-card>
-      <add-depts ref="addDepts" :show-dialog="showDialog" :node-data="nodeData" :departs-list="departsList" @add-depts-success="getDepartmentsList" @closeDialogFn="closeDialog" />
+      <add-depts ref="addDepts" :show-dialog.sync="showDialog" :node-data="nodeData" :departs-list="departsList" @add-depts-success="getDepartmentsList" />
     </div>
   </div>
 </template>
@@ -85,8 +85,18 @@ export default {
     showAddDeptsDialog(nodeData) {
       this.showDialog = true
       this.nodeData = nodeData
-      this.$refs.addDepts.getSimpleUserList()
+      // this.$refs.addDepts.showTitle = '添加子部门'
+      // this.$refs.addDepts.getSimpleUserList()
       // console.log(this.nodeData)
+    },
+    showEditDeptsDialog(nodeData) {
+      this.showDialog = true
+      this.nodeData = nodeData
+      // this.$refs.addDepts.showTitle = '修改子部门'
+      // this.$refs.addDepts.getSimpleUserList()
+      this.$nextTick(() => {
+        this.$refs.addDepts.getDepartmentDetail()
+      })
     }
   }
 }
