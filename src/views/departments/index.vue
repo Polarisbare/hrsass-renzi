@@ -1,7 +1,7 @@
 <template>
   <div class="departments-container">
     <div class="app-container">
-      <el-card class="tree-card">
+      <el-card v-loading="isLoading" class="tree-card">
         <!-- 用了一个行列布局 -->
         <trre-tools :node-data="company" :is-root="true" @add-depts="showAddDeptsDialog" />
         <!-- 当el-row 放到其他标签中，宽度是通过内容撑开的 -->
@@ -35,7 +35,8 @@ export default {
         label: 'name'
       },
       showDialog: false,
-      nodeData: {}
+      nodeData: {},
+      isLoading: false
     }
   },
   created() {
@@ -43,10 +44,12 @@ export default {
   },
   methods: {
     async getDepartmentsList() {
+      this.isLoading = true
       const { data } = await getDepartmentsListApi()
       this.company.name = data.companyName
       this.departsList = data.depts
       this.departs = transListToTreeData(data.depts, '')
+      this.isLoading = false
       // console.log(data)
     },
     //   transListToTreeData(list, searchVal) {

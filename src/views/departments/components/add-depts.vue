@@ -112,15 +112,36 @@ export default {
     },
     // 三个参数  rule value callback
     validatDeptNameIsRepeat(rule, value, callback) {
-    // 校验当前部门的子部门和你输入的内容是否一样===
-    // 当前部门的信息存在nodeData
-    // 先把nodeData信息接收过来，在接收一份全部数组departsList
-      const children = this.departsList.filter(item => item.pid === this.nodeData.id)
+      let children = []
+      // 校验当前部门的子部门和你输入的内容是否一样===
+      // 当前部门的信息存在nodeData
+      // 先把nodeData信息接收过来，在接收一份全部数组departsList
       //   console.log(this.nodeData)v
+      // 修改 逻辑
+      if (this.form.id) {
+        // 先判断输入的内容是否跟我原来的一样
+        if (value === this.nodeData.name) {
+          callback()
+          return
+        }
+        // 如果输入的内容不一样，则比较输入内容和其他兄弟节点进行对比
+        // 1.先找到兄弟节点
+        children = this.departsList.filter(item => item.pid === this.nodeData.pid) || []
+        // 从兄弟节点中找到每一样  跟我输入内容进行对比
+      } else {
+        // 校验   判断当前部门里的子部门  是否跟你输入的内容一样
+        // 当前部门的信息 存在了nodeData中
+        // 1.先获取所有部门数据departsList
+        children = this.departsList.filter(item => item.pid === this.nodeData.id)
+      }
       const isRepeat = children.some(item => item.name === value)
       isRepeat ? callback(new Error('当前部门已存在')) : callback()
     },
     validatDeptCodeIsRepeat(rule, value, callback) {
+      if (this.form.id && this.nodeData.code === value) {
+        callback()
+        return
+      }
       const isRepeat = this.departsList.some(item => item.code === value)
       isRepeat ? callback(new Error('当前编码已存在')) : callback()
     },
@@ -128,7 +149,7 @@ export default {
       const { data } = await getSimpleUserListApi()
       // console.log(res)
       this.employeesList = data
-      console.log(data)
+      // console.log(data)
     },
     openDialog() {
       this.getSimpleUserList()
