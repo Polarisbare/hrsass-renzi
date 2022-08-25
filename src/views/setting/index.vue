@@ -1,7 +1,7 @@
 <template>
   <div class="setting-container">
     <div class="app-container">
-      <el-card>
+      <el-card v-loading="loading">
         <el-tabs>
           <!-- 左侧 -->
           <el-tab-pane label="角色管理">
@@ -13,13 +13,15 @@
             >新增角色</el-button>
             <!-- 表格 -->
             <el-table :data="list">
-              <el-table-column label="序号" width="100" type="index" />
+              <el-table-column label="序号" width="100" type="index" :index="indexMethod" />
               <el-table-column label="角色名称" width="240" prop="name" />
               <el-table-column label="描述" prop="description" />
               <el-table-column label="操作">
-                <el-button size="small" type="success">分配权限</el-button>
-                <el-button size="small" type="primary">编辑</el-button>
-                <el-button size="small" type="danger">删除</el-button>
+                <template #default="{row}">
+                  <el-button size="small" type="success">分配权限</el-button>
+                  <el-button size="small" type="primary">编辑</el-button>
+                  <el-button size="small" type="danger" @click="delRoleList(row.id)">删除</el-button>
+                </template>
               </el-table-column>
             </el-table>
 
@@ -47,7 +49,7 @@
 </template>
 
 <script>
-import { getRoleListApi } from '@/api/setting'
+import { getRoleListApi, delRoleListApi } from '@/api/setting'
 export default {
   name: 'Setting',
   data() {
@@ -55,7 +57,8 @@ export default {
       list: [],
       total: 0, // 总条数
       pagesize: 4, // 每页条数
-      page: 1 // 当前页
+      page: 1, // 当前页
+      loading: false
     }
   },
   created() {
@@ -63,11 +66,13 @@ export default {
   },
   methods: {
     async getRoleList() {
+      this.loading = true
       const { data } = await getRoleListApi(this.page, this.pagesize)
       // console.log(data)
       const { rows, total } = data
       this.list = rows
       this.total = total
+      this.loading = false
     },
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`)
@@ -81,6 +86,20 @@ export default {
       this.page = val
       // 调用方法, 重新请求
       this.getRoleList()
+    },
+    indexMethod(index) {
+      return (this.page - 1) * this.pagesize + index + 1
+    },
+    delRoleList(id) {
+      this.$confirm('确定要删除吗', '温馨提示').then(async() => {
+        await delRoleListApi(id)
+        this.$message.success('恭喜删除成功')
+        // 如果删除的页码部位1   并且只有一条输入  删除之后应该加载前一页数据
+        if (this.page > 1 && this.list.length === 1) {
+          this.page--
+        }
+        this.getRoleList()
+      }).catch(() => {})
     }
   }
 }
