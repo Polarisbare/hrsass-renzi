@@ -20,6 +20,8 @@ import components from '@/components/index'// 引入全局注册的组件利用�
 import request from '@/utils/request.js'
 
 import * as directive from '@/directive/index'
+// 引入过滤器
+import * as filters from '@/filters'
 // 1.利用for in
 // for (const key in directive) {
 //   Vue.directive(key, directive[key])
@@ -27,6 +29,10 @@ import * as directive from '@/directive/index'
 // 2.利用Object[key]注册
 Object.keys(directive).forEach(key => {
   Vue.directive(key, directive[key])
+})
+// 批量注册过滤器
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
 })
 
 // set ElementUI lang to EN

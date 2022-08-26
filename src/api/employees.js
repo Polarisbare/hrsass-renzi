@@ -19,3 +19,14 @@ export const getEmployeeListApi = (page, size) => {
     }
   })
 }
+/**
+ * 删除员工
+ * @param {*} id
+ * @returns
+ */
+export const delEmployeeApi = (id) => {
+  return request({
+    url: `/sys/user/${id}`,
+    method: 'DELETE'
+  })
+}
