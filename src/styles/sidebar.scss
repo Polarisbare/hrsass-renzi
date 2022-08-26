@@ -9,7 +9,8 @@
 
   .sidebar-container {
     // background: -webkit-linear-gradient(bottom, #3d6df8, #5b8cff);
-    background: -webkit-linear-gradient(bottom, #464a55, #bfc9e6);
+    background: -webkit-linear-gradient(bottom, #1a1b1b, #121213);
+    // background-color:#545c64;
     transition: width 0.28s;
     width: $sideBarWidth !important;
     background-color: $menuBg;
@@ -254,7 +255,7 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      background: #99a9bf;
+      background: #939ead;
       border-radius: 20px;
     }
   }

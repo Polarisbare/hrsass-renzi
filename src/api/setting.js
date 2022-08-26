@@ -25,3 +25,33 @@ export const delRoleListApi = (id) => {
     method: 'DELETE'
   })
 }
+/**
+ * 添加角色
+ * @param {*} data
+ * @returns
+ */
+export const addRoleApi = (data) => {
+  return request({
+    url: '/sys/role',
+    method: 'POST',
+    data
+  })
+}
+/**
+ * 根据id获取角色详情（回显时）
+ * @param {*} id
+ * @returns
+ */
+export const getRoleDetailApi = (id) => {
+  return request({
+    url: `/sys/role/${id}`
+  })
+}
+
+export const updateRoleApi = (form) => {
+  return request({
+    url: `/sys/role/${form.id}`,
+    method: 'PUT',
+    data: form
+  })
+}
