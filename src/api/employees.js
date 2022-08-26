@@ -9,3 +9,13 @@ export const getSimpleUserListApi = () => {
     url: '/sys/user/simple'
   })
 }
+
+export const getEmployeeListApi = (page, size) => {
+  return request({
+    url: '/sys/user',
+    params: {
+      page,
+      size
+    }
+  })
+}
