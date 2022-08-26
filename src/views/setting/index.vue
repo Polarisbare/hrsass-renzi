@@ -2,9 +2,9 @@
   <div class="setting-container">
     <div class="app-container">
       <el-card v-loading="loading">
-        <el-tabs>
+        <el-tabs v-model="activeName">
           <!-- 左侧 -->
-          <el-tab-pane label="角色管理">
+          <el-tab-pane label="角色管理" name="role">
             <!-- 按钮 -->
             <el-button
               icon="el-icon-plus"
@@ -77,7 +77,7 @@
             </div>
           </el-tab-pane>
 
-          <el-tab-pane label="公司信息">
+          <el-tab-pane label="公司信息" name="company">
             <!-- 公司信息 -->
             <!-- 警告信息 -->
             <el-alert
@@ -134,7 +134,13 @@ export default {
           }
         ]
       },
-      companyForm: []
+      activeName: 'role',
+      companyForm: {
+        name: '',
+        companyAddress: '',
+        mailbox: '',
+        remarks: ''
+      }
     }
   },
   computed: {

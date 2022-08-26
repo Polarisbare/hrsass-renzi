@@ -16,6 +16,7 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import components from '@/components/index'// 引入全局注册的组件利用插件的方法
 import request from '@/utils/request.js'
 
 import * as directive from '@/directive/index'
@@ -30,6 +31,7 @@ Object.keys(directive).forEach(key => {
 
 // set ElementUI lang to EN
 Vue.use(ElementUI)
+Vue.use(components)
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
 
