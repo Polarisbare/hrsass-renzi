@@ -30,11 +30,22 @@ export const delEmployeeApi = (id) => {
     method: 'DELETE'
   })
 }
-
+/**
+ * 新增
+ * @param {*} data
+ * @returns
+ */
 export const addEmployeeApi = (data) => {
   return request({
     url: '/sys/user',
     method: 'POST',
     data
+  })
+}
+export const batchAddEmployeeApi = list => {
+  return request({
+    url: '/sys/user/batch',
+    method: 'POST',
+    data: list
   })
 }
