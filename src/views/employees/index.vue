@@ -8,8 +8,8 @@
         </template>
         <!-- 右侧插槽 -->
         <template #right>
-          <el-button type="warning" size="small" @click="$router.push('/import')">excel导入</el-button>
-          <el-button type="danger" size="small">excel导出</el-button>
+          <el-button type="warning" size="small" @click="$router.push('/import?type=user')">excel导入</el-button>
+          <el-button type="danger" size="small" @click="exportExle">excel导出</el-button>
           <el-button type="primary" size="small" @click="addEmpolyeeAdd">新增员工</el-button>
         </template>
       </PageTools>
@@ -57,7 +57,7 @@
 <script>
 import AddEmployee from './components/add-employee.vue'
 import enumObj from '@/constant/employees'
-import { getEmployeeListApi, delEmployeeApi } from '@/api/employees'
+import { getEmployeeListApi, delEmployeeApi, getSimpleUserListApi } from '@/api/employees'
 export default {
   name: 'Employees',
   components: {
@@ -108,7 +108,26 @@ export default {
     // 添加
     addEmpolyeeAdd() {
       this.showDialog = true
+    },
+    // 导出
+    async exportExle() {
+      // 先获取数据
+      await getSimpleUserListApi(1, this.total)
+      // console.log(res)
+      import('@/vendor/Export2Excel').then(excel => {
+        excel.export_json_to_excel({
+          header: ['姓名', '工资'], // 表头 必填
+          data: [
+            ['刘备', 100],
+            ['关羽', 500]
+          ], // 具体数据 必填
+          filename: 'excel-list', // 非必填
+          autoWidth: true, // 非必填
+          bookType: 'xlsx' // 非必填
+        })
+      })
     }
+
   }
 }
 </script>

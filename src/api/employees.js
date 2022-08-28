@@ -42,7 +42,7 @@ export const addEmployeeApi = (data) => {
     data
   })
 }
-export const batchAddEmployeeApi = list => {
+export const batchAddEmployeeApi = (list) => {
   return request({
     url: '/sys/user/batch',
     method: 'POST',
