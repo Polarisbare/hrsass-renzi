@@ -49,3 +49,14 @@ export const batchAddEmployeeApi = (list) => {
     data: list
   })
 }
+
+/** *
+ * 保存员工的基本信息
+ * **/
+export function saveUserDetailByIdApi(data) {
+  return request({
+    method: 'put',
+    url: `/sys/user/${data.id}`,
+    data
+  })
+}
