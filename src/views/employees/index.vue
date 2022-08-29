@@ -57,7 +57,8 @@
 <script>
 import AddEmployee from './components/add-employee.vue'
 import enumObj from '@/constant/employees'
-import { getEmployeeListApi, delEmployeeApi, getSimpleUserListApi } from '@/api/employees'
+import { getEmployeeListApi, delEmployeeApi } from '@/api/employees'
+import { getFormateTime } from '@/filters/index'
 export default {
   name: 'Employees',
   components: {
@@ -111,21 +112,54 @@ export default {
     },
     // 导出
     async exportExle() {
+      const headersArr = ['姓名', '手机号', '入职日期', '聘用形式', '转正日期', '工号', '部门']
+      const headersRelations = {
+        '姓名': 'username',
+        '手机号': 'mobile',
+        '入职日期': 'timeOfEntry',
+        '聘用形式': 'formOfEmployment',
+        '转正日期': 'correctionTime',
+        '工号': 'workNumber',
+        '部门': 'departmentName'
+      }
       // 先获取数据
-      await getSimpleUserListApi(1, this.total)
-      // console.log(res)
+      const { data: { rows }} = await getEmployeeListApi(1, this.total)
+      // console.log(rows)
+      const dataArr = this.formatJson(rows, headersArr, headersRelations)
       import('@/vendor/Export2Excel').then(excel => {
         excel.export_json_to_excel({
-          header: ['姓名', '工资'], // 表头 必填
-          data: [
-            ['刘备', 100],
-            ['关羽', 500]
-          ], // 具体数据 必填
-          filename: 'excel-list', // 非必填
-          autoWidth: true, // 非必填
-          bookType: 'xlsx' // 非必填
+          header: headersArr, // 表头 必填
+          data: dataArr, // 具体数据 必填
+          filename: '员工信息', // 导出表的名称
+          autoWidth: true, // 宽度自适应
+          bookType: 'xlsx' // 格式
         })
       })
+    },
+    // 返回出数组包数组的形式
+    formatJson(rows, headersArr, headersRelations) {
+      // [
+      //   [ 值1, 值2, 值3, ... ]
+      // ]
+      const result = []
+      rows.forEach(item => {
+        const arr = []
+        headersArr.forEach(key => {
+          const ENKey = headersRelations[key]
+          let value = item[ENKey]
+          if (['timeOfEntry', 'correctionTime'].includes(ENKey)) {
+            value = value ? getFormateTime(value) : ''
+          }
+          if (ENKey === 'formOfEmployment') {
+            const obj = enumObj.hireType.find(obj => obj.id === value)
+            value = obj ? obj.value : '未知'
+          }
+          arr.push(value)
+        })
+        result.push(arr)
+      })
+      // console.log(result)
+      return result
     }
 
   }
