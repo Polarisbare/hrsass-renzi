@@ -1,7 +1,8 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
-    <UploadExcel :on-success="handleSuccess" :before-upload="beforeUpload" />
+    <!-- <UploadExcel :on-success="handleSuccess" :before-upload="beforeUpload" /> -->
+    <ImageUpload :limit="2" />
   </div>
 </template>
 

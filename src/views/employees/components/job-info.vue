@@ -154,7 +154,7 @@
 
 <script>
 import EmployeeEnum from '@/constant/employees'
-import { getUserSimpleApi, getJobDetailApi, updateJobApi } from '@/api/employees'
+import { getSimpleUserListApi, getJobDetailApi, updateJobApi } from '@/api/employees'
 export default {
   data() {
     return {
@@ -207,7 +207,7 @@ export default {
     },
     // 获取员工列表, 用于将来用户选择上级 (以及, 上级员工名称的显示)
     async getEmployeeSimple() {
-      const { data } = await getUserSimpleApi()
+      const { data } = await getSimpleUserListApi()
       this.list = data
     },
     async saveJob() {
