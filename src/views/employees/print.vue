@@ -9,7 +9,10 @@
           </el-breadcrumb-item>
           <el-breadcrumb-item>打印</el-breadcrumb-item>
         </el-breadcrumb>
-        <div v-if="type === 'personal'">
+        <div style="text-align: right; margin-top: 10px;">
+          <el-button v-print="{ id: 'printbox' }" type="primary" size="small">打印</el-button>
+        </div>
+        <div v-if="type === 'personal'" id="printbox">
           <h2 class="centInfo">员工信息表</h2>
           <table cellspacing="0" width="100%" class="tableList">
             <tr class="title">
@@ -210,7 +213,7 @@
           </table>
           <div class="foot">签字：___________日期:___________</div>
         </div>
-        <div v-else>
+        <div v-else id="printbox">
           <h2 class="centInfo">岗位信息表</h2>
           <table cellspacing="0" width="100%" class="tableList">
             <tr class="title">

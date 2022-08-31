@@ -38,7 +38,7 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button type="text" size="small" @click="showEditRoleFn(row.id)">角色</el-button>
               <el-button type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -55,6 +55,7 @@
         </div>
       </el-card>
       <AddEmployee :show-dialog.sync="showDialog" />
+      <AssignRole :show-role-dialog.sync="showRoleDialog" :user-id="userId" />
       <!-- 分享展示, 预览的二维码的弹层 -->
       <el-dialog width="300px" title="二维码" :visible="showCodeDialog" @close="closeDialog">
         <el-row type="flex" justify="center">
@@ -72,10 +73,12 @@ import { getEmployeeListApi, delEmployeeApi } from '@/api/employees'
 import { getFormateTime } from '@/filters/index'
 import suitu from '@/assets/common/suitu.png'
 import QrCode from 'qrcode'
+import AssignRole from './components/assign-role.vue'
 export default {
   name: 'Employees',
   components: {
-    AddEmployee
+    AddEmployee,
+    AssignRole
   },
   data() {
     return {
@@ -87,7 +90,9 @@ export default {
       showDialog: false,
       defaultImage: 'https://img2.baidu.com/it/u=2203692359,101708973&fm=253&fmt=auto&app=138&f=PNG?w=401&h=401',
       suitu,
-      showCodeDialog: false
+      showCodeDialog: false,
+      showRoleDialog: false,
+      userId: ''
     }
   },
   created() {
@@ -188,6 +193,11 @@ export default {
     },
     closeDialog() {
       this.showCodeDialog = false
+    },
+    // 角色分配弹窗
+    showEditRoleFn(id) {
+      this.showRoleDialog = true
+      this.userId = id
     }
 
   }
