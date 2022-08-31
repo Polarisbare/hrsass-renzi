@@ -17,6 +17,11 @@
       <el-card style="margin-top: 10px;">
         <el-table border :data="list">
           <el-table-column label="序号" type="index" width="100" :index="indexMethod" />
+          <el-table-column label="头像" prop="timeOfEntry">
+            <template #default="{ row }">
+              <img v-imgerror="suitu" class="staff" :src="row.staffPhoto || defaultImage" alt="" @click="clickShowCodeDialog(row.staffPhoto)">
+            </template>
+          </el-table-column>
           <el-table-column label="姓名" prop="username" />
           <el-table-column label="手机号" prop="mobile" />
           <el-table-column label="工号" prop="workNumber" />
@@ -50,6 +55,12 @@
         </div>
       </el-card>
       <AddEmployee :show-dialog.sync="showDialog" />
+      <!-- 分享展示, 预览的二维码的弹层 -->
+      <el-dialog width="300px" title="二维码" :visible="showCodeDialog" @close="closeDialog">
+        <el-row type="flex" justify="center">
+          <canvas ref="myCanvas" />
+        </el-row>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -59,6 +70,8 @@ import AddEmployee from './components/add-employee.vue'
 import enumObj from '@/constant/employees'
 import { getEmployeeListApi, delEmployeeApi } from '@/api/employees'
 import { getFormateTime } from '@/filters/index'
+import suitu from '@/assets/common/suitu.png'
+import QrCode from 'qrcode'
 export default {
   name: 'Employees',
   components: {
@@ -71,7 +84,10 @@ export default {
       total: 0,
       pageSize: 10, // 每页条数
       hireType: enumObj.hireType,
-      showDialog: false
+      showDialog: false,
+      defaultImage: 'https://img2.baidu.com/it/u=2203692359,101708973&fm=253&fmt=auto&app=138&f=PNG?w=401&h=401',
+      suitu,
+      showCodeDialog: false
     }
   },
   created() {
@@ -160,12 +176,30 @@ export default {
       })
       // console.log(result)
       return result
+    },
+    // 点击出现弹框
+    clickShowCodeDialog(url) {
+      if (!url) return // 有图片才显示弹层
+      this.showCodeDialog = true
+      this.$nextTick(() => {
+        // 如果这里 url 写的是网址, 就会跳转到对应网址 (二维码分享效果)
+        QrCode.toCanvas(this.$refs.myCanvas, url)
+      })
+    },
+    closeDialog() {
+      this.showCodeDialog = false
     }
 
   }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.employees-container {
+  .staff {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
+}
 </style>

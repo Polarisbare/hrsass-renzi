@@ -60,8 +60,8 @@ export default {
       this.dialogVisible = true
     },
     handleRemove(file, fileList) {
-      console.log(file)
-      console.log(fileList)
+      // console.log(file)
+      // console.log(fileList)
       this.fileList = [...fileList]
     },
     handleRequest({ file }) {

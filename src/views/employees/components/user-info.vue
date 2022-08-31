@@ -89,6 +89,7 @@
 
         <el-form-item label="员工照片">
           <!-- 放置上传图片 -->
+          <ImageUpload ref="staffRefs" />
         </el-form-item>
         <el-form-item label="国家/地区">
           <el-select v-model="formData.nationalArea" class="inputW2">
@@ -371,6 +372,7 @@ export default {
   methods: {
     async getUserDetailById() {
       const { data } = await getUserDetailByIdApi(this.userId)
+      // console.log('wudi', data)
       this.$refs.staffRef.fileList = [
         { url: data.staffPhoto }
       ]
@@ -390,16 +392,30 @@ export default {
         return
       }
       //  调用父组件
-      await saveUserDetailByIdApi(this.userInfo)
+      await saveUserDetailByIdApi({ ...this.userInfo, id: this.userId })
       this.$message.success('保存成功')
     },
 
     async getPersonalDetail() {
       const { data } = await getPersonalDetailApi(this.userId) // 获取员工数据
       this.formData = data
+      console.log('wudi', data)
+      this.$refs.staffRefs.fileList = [
+        { url: data.staffPhoto }
+      ]
     },
     async savePersonal() {
-      await updatePersonalApi({ ...this.formData, userId: this.userId })
+      const staffRefs = this.$refs.staffRefs
+      const imgUrl = staffRefs.fileList[0]?.url
+      if (!imgUrl) {
+        this.$message.error('必须上传照片')
+        return
+      }
+      if (!staffRefs.isAllUploadSuccess) {
+        this.$message.error('还有头像正在上传')
+        return
+      }
+      await updatePersonalApi({ ...this.formData, userId: this.userId, staffPhoto: imgUrl })
       this.$message.success('保存成功')
     }
   }
