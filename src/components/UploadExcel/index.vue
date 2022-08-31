@@ -5,7 +5,12 @@
   <!-- handleDragover 阻止浏览器的默认行为  -->
   <div class="upload-excel">
     <div class="btn-upload">
-      <el-button :loading="loading" size="mini" type="primary" @click="handleUpload">
+      <el-button
+        :loading="loading"
+        size="mini"
+        type="primary"
+        @click="handleUpload"
+      >
         点击上传
       </el-button>
     </div>
