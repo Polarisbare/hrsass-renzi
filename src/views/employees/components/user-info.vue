@@ -57,7 +57,7 @@
         <el-col :span="12">
           <el-form-item label="员工头像">
             <!-- 放置上传图片 -->
-
+            <ImageUpload ref="staffRef" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -371,10 +371,25 @@ export default {
   methods: {
     async getUserDetailById() {
       const { data } = await getUserDetailByIdApi(this.userId)
+      this.$refs.staffRef.fileList = [
+        { url: data.staffPhoto }
+      ]
       this.userInfo = data
     },
     async saveUser() {
-    //  调用父组件
+      const staffRef = this.$refs.staffRef
+      if (staffRef.fileList && staffRef.fileList.length > 0) {
+        const imgUrl = staffRef.fileList[0].url
+        this.userInfo.staffPhoto = imgUrl
+      } else {
+        this.$message.error('必须上传头像')
+        return
+      }
+      if (!staffRef.isAllUploadSuccess) {
+        this.$message.error('还有头像正在上传')
+        return
+      }
+      //  调用父组件
       await saveUserDetailByIdApi(this.userInfo)
       this.$message.success('保存成功')
     },

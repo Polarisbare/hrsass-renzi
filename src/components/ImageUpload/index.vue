@@ -2,7 +2,7 @@
   <div class="upload-image">
     <!-- i标签 显示删除更换内的+号
         list-type="picture-card"显示的上传组件的外边框
-        action：比穿的 作用：图片服务器对应的地址当你不想使用action上传地址可以用#
+        action：必传的 作用：图片服务器对应的地址当你不想使用action上传地址可以用#
         :http-request="handleRequest"   覆盖之前的上传的可以自定义实现）
         :on-change="hanldeChange"  文件改变时的钩子包括上传添加都会调用 上传文件改变的时候触发事件
         ：before-upload 上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传。-->
@@ -41,14 +41,7 @@ export default {
     return {
       dialogImageUrl: '',
       dialogVisible: false,
-      fileList: [
-        {
-          url: 'https://st-gdx.dancf.com/gaodingx/0/uxms/design/20210804-150354-fb26.gif?x-oss-process=image/format,webp'
-        },
-        {
-          url: 'https://st-gdx.dancf.com/gaodingx/0/uxms/design/20201110-225521-4cba.gif?x-oss-process=image/format,webp'
-        }
-      ],
+      fileList: [],
       //   showDialog: false, // 控制显示弹层
       imgUrl: ''
     }
@@ -56,6 +49,9 @@ export default {
   computed: {
     isDisabled() {
       return this.fileList.length >= this.limit
+    },
+    isAllUploadSuccess() {
+      return this.fileList.every(item => item.status === 'success')
     }
   },
   methods: {
@@ -70,6 +66,8 @@ export default {
     },
     handleRequest({ file }) {
       // console.log(obj)  返回的file.name 要用到
+      const fileObj = this.fileList.find(item => item.uid === file.uid)
+      fileObj.status = 'uploading'
       cos.putObject({
         Bucket: 'hrscas-1313551044', /* 填入您自己的存储桶，必须字段 */
         Region: 'ap-beijing', /* 存储桶所在地域，例如ap-beijing，必须字段 */
@@ -77,10 +75,22 @@ export default {
         StorageClass: 'STANDARD',
         Body: file, // 上传文件对象
         onProgress: function(progressData) {
-          console.log(JSON.stringify(progressData))
+          // console.log(JSON.stringify(progressData))
+          fileObj.percentage = progressData.percent * 100
         }
       }, function(err, data) {
         console.log(err || data)
+        if (err) {
+          this.$message.error('上传失败')
+          return
+        }
+        // location = 'http' + data.Location
+        // 更新状态
+        // 修改地址
+        fileObj.url = 'https://' + data.Location
+        setTimeout(() => {
+          fileObj.status = 'success'
+        }, 800)
       })
     },
     hanldeChange(file, fileList) {
