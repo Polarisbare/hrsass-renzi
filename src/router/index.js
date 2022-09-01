@@ -89,16 +89,16 @@ export const constantRoutes = [
         component: () => import('@/views/import/index')
       }
     ]
-  },
+  }
 
   // 以上路由都匹配不到就会进入404
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes, ...asyncRoutes]
+  routes: [...constantRoutes]// ...asyncRoutes
 })
 
 const router = createRouter()
