@@ -112,3 +112,15 @@ export function getUserDetailByIdApi(id) {
     url: `/sys/user/${id}`
   })
 }
+/**
+ * 给员工分配角色
+ * @param {*} data
+ * @returns
+ */
+export const getEmployeeRoleApi = (data) => {
+  return request({
+    url: '/sys/user/assignRoles',
+    method: 'PUT',
+    data
+  })
+}

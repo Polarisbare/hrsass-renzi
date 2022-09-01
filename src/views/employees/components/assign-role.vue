@@ -8,7 +8,7 @@
     @open="openEditDialog"
   >
     <!-- 这里准备复选框 -->
-    <el-checkbox-group v-model="checkList">
+    <el-checkbox-group v-model="checkList" v-loading="isloading">
       <!-- 选项 -->
       <!-- <el-checkbox label="110">管理员</el-checkbox> -->
       <el-checkbox
@@ -19,7 +19,7 @@
     </el-checkbox-group>
 
     <template #footer>
-      <el-button type="primary" size="small">确定</el-button>
+      <el-button type="primary" size="small" @click="getEmployeeRole">确定</el-button>
       <el-button size="small" @click="closeEditDialog">取消</el-button>
     </template>
   </el-dialog>
@@ -28,6 +28,7 @@
 <script>
 import { getBaseUserInfoApi } from '@/api/user'
 import { getRoleListApi } from '@/api/setting'
+import { getEmployeeRoleApi } from '@/api/employees'
 export default {
   props: {
     showRoleDialog: {
@@ -43,7 +44,8 @@ export default {
   data() {
     return {
       checkList: [],
-      roleList: []
+      roleList: [],
+      isloading: false
     }
   },
   methods: {
@@ -58,8 +60,12 @@ export default {
      *
      */
     openEditDialog() {
+      this.isloading = true
       this.getRoleList()
-      // this.getBaseUserInfo()
+      this.getBaseUserInfo()
+      Promise.all([this.getRoleList(), this.getBaseUserInfo()]).then(() => {
+        this.isloading = false
+      })
     },
     async getRoleList() {
       const { data } = await getRoleListApi(1, 66666)
@@ -70,6 +76,11 @@ export default {
       const { data: { roleIds }} = await getBaseUserInfoApi(this.userId)
       // console.log(res)
       this.checkList = roleIds
+    },
+    async getEmployeeRole() {
+      const data = { id: this.userId, roleIds: this.checkList }
+      await getEmployeeRoleApi(data)
+      this.closeEditDialog()
     }
 
   }

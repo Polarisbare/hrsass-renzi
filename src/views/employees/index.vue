@@ -72,7 +72,7 @@ import enumObj from '@/constant/employees'
 import { getEmployeeListApi, delEmployeeApi } from '@/api/employees'
 import { getFormateTime } from '@/filters/index'
 import suitu from '@/assets/common/suitu.png'
-import QrCode from 'qrcode'
+import QrCode from 'qrcode'// 产生二维码插件
 import AssignRole from './components/assign-role.vue'
 export default {
   name: 'Employees',
