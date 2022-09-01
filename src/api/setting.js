@@ -47,11 +47,23 @@ export const getRoleDetailApi = (id) => {
     url: `/sys/role/${id}`
   })
 }
-
+/**
+ * 修改
+ * @param {*} form
+ * @returns
+ */
 export const updateRoleApi = (form) => {
   return request({
     url: `/sys/role/${form.id}`,
     method: 'PUT',
     data: form
+  })
+}
+// 给角色分配权限
+export function assignPermApi(data) {
+  return request({
+    url: '/sys/role/assignPrem',
+    method: 'put',
+    data
   })
 }

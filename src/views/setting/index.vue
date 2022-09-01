@@ -113,16 +113,19 @@
         @open="openAssignDialog"
       >
         <el-tree
+          ref="tree"
+          v-loading="isloading"
           :data="permissionData"
           :props="{ label: 'name' }"
           :default-expand-all="true"
           :show-checkbox="true"
           :check-strictly="true"
+          node-key="id"
         />
         <template #footer>
           <div style="text-align: right;">
             <el-button @click="closeAssignDialog">取消</el-button>
-            <el-button type="primary">确定</el-button>
+            <el-button type="primary" @click="clickAssign">确定</el-button>
           </div>
         </template>
       </el-dialog>
@@ -134,11 +137,12 @@ import { getPermissionListApi } from '@/api/permission'
 import { transListToTreeData } from '@/utils'
 import { mapState } from 'vuex'
 import { getCompanyByIdApi } from '@/api/company'
-import { getRoleListApi, delRoleListApi, addRoleApi, getRoleDetailApi, updateRoleApi } from '@/api/setting'
+import { getRoleListApi, delRoleListApi, addRoleApi, getRoleDetailApi, updateRoleApi, assignPermApi } from '@/api/setting'
 export default {
   name: 'Setting',
   data() {
     return {
+      isloading: false,
       permissionData: [], // 存储权限数据
       roleId: '', // 记录正在操作的角色，
       showAssignDialog: false,
@@ -168,6 +172,7 @@ export default {
         mailbox: '',
         remarks: ''
       }
+
     }
   },
   computed: {
@@ -263,16 +268,32 @@ export default {
     /**
      * 点击分配权限
      */
-    async clickShowAssignDialog(id) {
+    clickShowAssignDialog(id) {
+      this.isloading = true
       this.roleId = id
+      console.log(id)
       this.showAssignDialog = true
-      const { data } = await getPermissionListApi()
-      // console.log(data)
-      this.permissionData = transListToTreeData(data, '0')
-      // console.log(this.permissionData)
+
+      this.isloading = false
     },
-    openAssignDialog() {
-      this.clickShowAssignDialog()
+    async openAssignDialog() {
+      // this.clickShowAssignDialog()
+      // 发送请求, 获取权限列表
+      const { data: permissionData } = await getPermissionListApi()
+      this.permissionData = transListToTreeData(permissionData, '0')
+      // console.log(this.permissionData)
+      // 发送请求, 获取已有权限
+      const { data: { permIds }} = await getRoleDetailApi(this.roleId)
+      this.$refs.tree.setCheckedKeys(permIds)
+    },
+    // 分配权限
+    async clickAssign() {
+      await assignPermApi({
+        id: this.roleId,
+        permIds: this.$refs.tree.getCheckedKeys()
+      })
+      this.$message.success('分配成功')
+      this.showAssignDialog = false
     }
   }
 
