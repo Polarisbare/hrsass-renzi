@@ -34,12 +34,27 @@
           </el-table-column>
           <el-table-column label="操作" fixed="right" width="280">
             <template #default="{row}">
-              <el-button type="text" size="small" @click="$router.push(`/employees/detail/${row.id}`)">查看</el-button>
-              <el-button type="text" size="small">转正</el-button>
+              <el-button
+                v-if="checkPermission('EMP_LOOK')"
+                type="text"
+                size="small"
+                @click="$router.push(`/employees/detail/${row.id}`)"
+              >查看</el-button>
+              <!-- <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
-              <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small" @click="showEditRoleFn(row.id)">角色</el-button>
-              <el-button type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
+              <el-button type="text" size="small">离职</el-button> -->
+              <el-button
+                v-if="checkPermission('EMP_POLE')"
+                type="text"
+                size="small"
+                @click="showEditRoleFn(row.id)"
+              >角色</el-button>
+              <el-button
+                v-if="checkPermission('EMP_DEL')"
+                type="text"
+                size="small"
+                @click="delEmployee(row.id)"
+              >删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -73,6 +88,7 @@ import { getEmployeeListApi, delEmployeeApi } from '@/api/employees'
 import { getFormateTime } from '@/filters/index'
 import suitu from '@/assets/common/suitu.png'
 import QrCode from 'qrcode'// 产生二维码插件
+import { mapGetters } from 'vuex'
 import AssignRole from './components/assign-role.vue'
 export default {
   name: 'Employees',
@@ -94,6 +110,9 @@ export default {
       showRoleDialog: false,
       userId: ''
     }
+  },
+  computed: {
+    ...mapGetters(['roles'])
   },
   created() {
     this.getEmployeeList()
@@ -198,6 +217,10 @@ export default {
     showEditRoleFn(id) {
       this.showRoleDialog = true
       this.userId = id
+    },
+    // 判断是否有二级权限
+    checkPermission(permission) {
+      return this.roles?.points?.includes(permission)
     }
 
   }
