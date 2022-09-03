@@ -50,6 +50,13 @@ export default {
       return year
     }
   },
+  watch: {
+    // 监听时间的变化   把改变的日期赋值给上面的表
+    currentDate(newValue) {
+      this.currentYear = newValue.getFullYear()
+      this.currentMonth = newValue.getMonth() + 1
+    }
+  },
   created() {
     this.currentYear = this.startDate.getFullYear() // 得到当前年份
     this.currentMonth = this.startDate.getMonth() + 1 // 当前月份
@@ -59,8 +66,7 @@ export default {
       this.currentDate = new Date(this.currentYear, this.currentMonth - 1, 1)
     },
     getDay(data) {
-      const day = data.split('-')[2] // 11, 02
-      return day.startsWith('0') ? day.slice(1) : day
+      return new Date(data).getDate()
     },
     isweek(date) {
       // 0是星期日
