@@ -15,6 +15,9 @@ export const color = {
     el.style.color = binding.value
   }
 }
+/**
+ * 设置权限中的查看角色删除
+ */
 import store from '@/store'
 export const permission = {
   inserted(el, binding) {
