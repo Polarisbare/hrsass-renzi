@@ -24,7 +24,8 @@
           <div slot="header" class="header">
             <span>工作日历</span>
           </div>
-        <!-- 放置日历组件 -->
+          <!-- 放置日历组件 -->
+          <WorkCalendar />
         </el-card>
         <!-- 公告 -->
         <el-card class="box-card">
@@ -121,9 +122,12 @@
 <script>
 import { mapGetters, mapState } from 'vuex'
 import defaultImg from '@/assets/common/bigUserHeader.png'
-
+import WorkCalendar from './components/work-calendar.vue'
 export default {
   name: 'Dashboard',
+  components: {
+    WorkCalendar
+  },
   data() {
     return {
       defaultImg
