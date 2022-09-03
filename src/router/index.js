@@ -51,6 +51,7 @@ export const asyncRoutes = [
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+// 静态路由表
 export const constantRoutes = [
   {
     path: '/login',

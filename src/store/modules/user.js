@@ -1,5 +1,6 @@
 import { loginApi, getUserInfoApi, getBaseUserInfoApi } from '@/api/user'
 import { getToken, removeToken, setToken } from '@/utils/auth'
+import { resetRouter } from '@/router'// 引入重置路由表
 const state = {
   token: getToken() || '',
   userInfo: {}
@@ -71,8 +72,14 @@ const actions = { // 放入异步操作
     return baseDate
   },
   logout({ commit }) {
+    // 清除token
     commit('clearToken')
+    // 清除用户信息
     commit('clearUserInfo')
+    // 清除router里面的路由表单
+    resetRouter()
+    // 清除vuex中的路由表
+    commit('permission/setRoutes', [], { root: true })
   }
 }
 
