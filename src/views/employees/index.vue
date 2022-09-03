@@ -34,8 +34,9 @@
           </el-table-column>
           <el-table-column label="操作" fixed="right" width="280">
             <template #default="{row}">
+              <!-- v-if="checkPermission('EMP_LOOK')" -->
               <el-button
-                v-if="checkPermission('EMP_LOOK')"
+                v-promission="'EMP_LOOK'"
                 type="text"
                 size="small"
                 @click="$router.push(`/employees/detail/${row.id}`)"
@@ -43,14 +44,16 @@
               <!-- <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button> -->
+              <!-- v-if="checkPermission('EMP_POLE')" -->
               <el-button
-                v-if="checkPermission('EMP_POLE')"
+                v-promission="'EMP_POLE'"
                 type="text"
                 size="small"
                 @click="showEditRoleFn(row.id)"
               >角色</el-button>
+              <!-- v-if="checkPermission('EMP_DEL')" -->
               <el-button
-                v-if="checkPermission('EMP_DEL')"
+                v-promission="'EMP_DEL'"
                 type="text"
                 size="small"
                 @click="delEmployee(row.id)"
@@ -90,12 +93,14 @@ import suitu from '@/assets/common/suitu.png'
 import QrCode from 'qrcode'// 产生二维码插件
 import { mapGetters } from 'vuex'
 import AssignRole from './components/assign-role.vue'
+import check from '@/mixins/check'
 export default {
   name: 'Employees',
   components: {
     AddEmployee,
     AssignRole
   },
+  mixins: [check],
   data() {
     return {
       page: 1,
@@ -217,10 +222,6 @@ export default {
     showEditRoleFn(id) {
       this.showRoleDialog = true
       this.userId = id
-    },
-    // 判断是否有二级权限
-    checkPermission(permission) {
-      return this.roles?.points?.includes(permission)
     }
 
   }

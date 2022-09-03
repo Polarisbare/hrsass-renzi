@@ -15,3 +15,12 @@ export const color = {
     el.style.color = binding.value
   }
 }
+import store from '@/store'
+export const permission = {
+  inserted(el, binding) {
+    const roles = store.getters.roles
+    if (!roles?.points?.includes(binding.value)) {
+      el.style.display = 'none'
+    }
+  }
+}
