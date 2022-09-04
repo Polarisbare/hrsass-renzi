@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Print from 'vue-print-nb'
 // 重置默认样式 reset.css
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
-
+import i18n from '@/lang'// 引入语言文件包
 import ElementUI from 'element-ui'
 // index .css 设置element-ui组件的样式
 import 'element-ui/lib/theme-chalk/index.css'
@@ -36,7 +36,10 @@ Object.keys(filters).forEach(key => {
 })
 
 // set ElementUI lang to EN
-Vue.use(ElementUI)
+Vue.use(
+  ElementUI,
+  { i18n: (key, value) => i18n.t(key, value) }
+)
 Vue.use(components)
 Vue.use(Print)
 // 如果想要中文版 element-ui，按如下方式声明
@@ -50,6 +53,7 @@ Vue.prototype.$request = request
 
 new Vue({
   el: '#app',
+  i18n,
   router,
   store,
   render: h => h(App)

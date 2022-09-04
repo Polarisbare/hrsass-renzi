@@ -4,11 +4,14 @@
 
     <!-- <breadcrumb class="breadcrumb-container" /> -->
     <div class="app-breadcrumb">
-      江苏传智播客教育科技股份有限公司
-      <span v-color="yanse" class="breadBtn">体验版</span>
+      {{ $t('navbar.title') }}
+      <span v-color="yanse" class="breadBtn">{{ $t('navbar.enjoy') }}</span>
     </div>
 
     <div class="right-menu">
+      <!-- 语言包 -->
+      <lang class="right-menu-item" />
+      <!-- 全屏组件 -->
       <screen-full class="right-menu-item" />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
