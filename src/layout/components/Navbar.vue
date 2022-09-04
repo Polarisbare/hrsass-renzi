@@ -9,6 +9,7 @@
     </div>
 
     <div class="right-menu">
+      <screen-full class="right-menu-item" />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img v-imgerror="defaultImg" :src="staffPhoto" class="user-avatar">
@@ -39,6 +40,7 @@ import { mapGetters, mapActions } from 'vuex'
 import Hamburger from '@/components/Hamburger'
 // import { getUserInfoApi } from '@/api/user'
 import defaultImg from '@/assets/common/bigUserHeader.png'
+
 export default {
   components: {
     // Breadcrumb,
@@ -140,7 +142,7 @@ export default {
       height: 100%;
       font-size: 18px;
       color: #5a5e66;
-      vertical-align: text-bottom;
+      vertical-align: middle;
 
       &.hover-effect {
         cursor: pointer;
